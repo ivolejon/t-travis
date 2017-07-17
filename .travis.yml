@@ -22,12 +22,14 @@ install:
   # Replace dep1 dep2 ... with your dependencies
   - conda create --name test-environment python=2.7
   - source activate test-environment
+  - conda install nomkl
   - conda install pip --yes
   - conda install --file conda-requirements.txt --yes
   - pip install -r requirements.txt  --exists-action=w --allow-all-external
   - conda install matplotlib=1.5.3
   - pip install honcho
   
-
+before_script:
+  - cd tests
 script:
-  - honcho -e .env-test -d ./tests start
+  - honcho -e .env-test start
