@@ -49,4 +49,4 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - cd tests
 script:
-  - honcho -e .env-test start
+  - honcho start
