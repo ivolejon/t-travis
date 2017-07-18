@@ -2,6 +2,22 @@ language: python
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
   - "2.7"
+services:
+  - redis-server
+  - postgresql
+env:
+  - REDIS_URL=redis://localhost:6379
+  - DATABASE_URL=postgres://postgres:@localhost/travis_ci_test
+  - SQLALCHEMY_DATABASE_URI=postgres://postgres:@localhost/travis_ci_test
+  - SQLALCHEMY_MIGRATE_REPO=db_repository
+  - SECRET_KEY=A0Zr98j3yXR~XHHjdmN]LWXRT
+  - SECURITY_PASSWORD_SALT=2bb10883-6724-42cb-a538-f41543393880
+  - APP_MAIL_USERNAME=ivo@xxx.se
+  - APP_MAIL_PASSWORD=xxx
+  - DEBUG=True
+  - FLASK_DEBUG=1
+  - DROPBOX=cxxx
+  - MINIFY_PAGE=False
 install:
   - sudo apt-get update
   # We do this conditionally because it saves us some downloading if the
@@ -30,6 +46,7 @@ install:
   - pip install honcho
   
 before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
   - cd tests
 script:
   - honcho -e .env-test start
